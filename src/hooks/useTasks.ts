@@ -3,8 +3,8 @@ import { DerivedTask, Metrics, Task } from '@/types';
 import {
   computeAverageROI,
   computePerformanceGrade,
-  computeRevenuePerHour,
-  computeTimeEfficiency,
+  computeRevenuePerHourForFiltered,
+  computeTimeEfficiencyForFiltered,
   computeTotalRevenue,
   withDerived,
   sortTasks as sortDerived,
@@ -100,8 +100,8 @@ export function useTasks(): UseTasksState {
     if (tasks.length === 0) return INITIAL_METRICS;
     const totalRevenue = computeTotalRevenue(tasks);
     const totalTimeTaken = tasks.reduce((s, t) => s + t.timeTaken, 0);
-    const timeEfficiencyPct = computeTimeEfficiency(tasks);
-    const revenuePerHour = computeRevenuePerHour(tasks);
+    const timeEfficiencyPct = computeTimeEfficiencyForFiltered(tasks);
+    const revenuePerHour = computeRevenuePerHourForFiltered(tasks);
     const averageROI = computeAverageROI(tasks);
     const performanceGrade = computePerformanceGrade(averageROI);
     return { totalRevenue, totalTimeTaken, timeEfficiencyPct, revenuePerHour, averageROI, performanceGrade };

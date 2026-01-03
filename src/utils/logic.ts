@@ -55,18 +55,27 @@ export function computeTotalRevenue(tasks: ReadonlyArray<Task>): number {
   return tasks.filter(t => t.status === 'Done').reduce((sum, t) => sum + t.revenue, 0);
 }
 
+export function computeTotalRevenueForFiltered(tasks: ReadonlyArray<Task>): number {
+  // For filtered views: sum revenue of all visible tasks regardless of status
+  return tasks.reduce((sum, t) => sum + t.revenue, 0);
+}
+
 export function computeTotalTimeTaken(tasks: ReadonlyArray<Task>): number {
   return tasks.reduce((sum, t) => sum + t.timeTaken, 0);
 }
 
-export function computeTimeEfficiency(tasks: ReadonlyArray<Task>): number {
+export function computeTimeEfficiencyForFiltered(tasks: ReadonlyArray<Task>): number {
+  // For filtered views: show % of Done vs all visible tasks
   if (tasks.length === 0) return 0;
   const done = tasks.filter(t => t.status === 'Done').length;
-  return (done / tasks.length) * 100;
+  const efficiency = (done / tasks.length) * 100;
+  console.log('computeTimeEfficiencyForFiltered:', { tasksLength: tasks.length, done, efficiency });
+  return efficiency;
 }
 
-export function computeRevenuePerHour(tasks: ReadonlyArray<Task>): number {
-  const revenue = computeTotalRevenue(tasks);
+export function computeRevenuePerHourForFiltered(tasks: ReadonlyArray<Task>): number {
+  // For filtered views: use filtered revenue and time
+  const revenue = computeTotalRevenueForFiltered(tasks);
   const time = computeTotalTimeTaken(tasks);
   return time > 0 ? revenue / time : 0;
 }

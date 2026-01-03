@@ -16,6 +16,7 @@ export default function MetricsBar({ metricsOverride }: { metricsOverride?: Metr
   const { metrics } = useTasksContext();
   const m = metricsOverride ?? metrics;
   const { totalRevenue, timeEfficiencyPct, revenuePerHour, averageROI, performanceGrade, totalTimeTaken } = m;
+  console.log('MetricsBar received timeEfficiencyPct:', timeEfficiencyPct);
   return (
     <Card>
       <CardContent>
@@ -31,7 +32,7 @@ export default function MetricsBar({ metricsOverride }: { metricsOverride?: Metr
           }}
         >
           <Stat label="Total Revenue" value={`$${totalRevenue.toLocaleString()}`} hint="Sum of revenue for Done tasks" />
-          <Stat label="Time Efficiency" value={`${timeEfficiencyPct.toFixed(0)}%`} hint="(Done / All) * 100" />
+          <Stat label="Time Efficiency" value={`${(Number.isFinite(timeEfficiencyPct) ? timeEfficiencyPct : 0).toFixed(0)}%`} hint="(Done / All visible) * 100" />
           <Stat label="Revenue / Hour" value={`$${(Number.isFinite(revenuePerHour) ? revenuePerHour : 0).toFixed(1)}`} hint="Total revenue divided by total time" />
           <Stat label="Average ROI" value={`${averageROI.toFixed(1)}`} hint="Mean of valid ROI values" />
           <Stat label="Grade" value={`${performanceGrade}`} hint={`Based on Avg ROI (${averageROI.toFixed(1)}) • Total time ${totalTimeTaken}h`} />

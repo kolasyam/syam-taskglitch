@@ -13,9 +13,10 @@ import type { Task } from '@/types';
 import {
   computeAverageROI,
   computePerformanceGrade,
-  computeRevenuePerHour,
-  computeTimeEfficiency,
-  computeTotalRevenue,
+  computeRevenuePerHourForFiltered,
+  computeTimeEfficiencyForFiltered,
+  computeTotalRevenueForFiltered,
+  computeTotalTimeTaken,
 } from '@/utils/logic';
 
 function AppContent() {
@@ -90,10 +91,10 @@ function AppContent() {
           {!loading && !error && (
             <MetricsBar
               metricsOverride={{
-                totalRevenue: computeTotalRevenue(filtered),
-                totalTimeTaken: filtered.reduce((s, t) => s + t.timeTaken, 0),
-                timeEfficiencyPct: computeTimeEfficiency(filtered),
-                revenuePerHour: computeRevenuePerHour(filtered),
+                totalRevenue: computeTotalRevenueForFiltered(filtered),
+                totalTimeTaken: computeTotalTimeTaken(filtered),
+                timeEfficiencyPct: computeTimeEfficiencyForFiltered(filtered),
+                revenuePerHour: computeRevenuePerHourForFiltered(filtered),
                 averageROI: computeAverageROI(filtered),
                 performanceGrade: computePerformanceGrade(computeAverageROI(filtered)),
               }}

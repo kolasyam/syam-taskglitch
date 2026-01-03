@@ -23,6 +23,7 @@ interface UseTasksState {
   updateTask: (id: string, patch: Partial<Task>) => void;
   deleteTask: (id: string) => void;
   undoDelete: () => void;
+  clearDeletedTask: () => void;
 }
 
 const INITIAL_METRICS: Metrics = {
@@ -145,8 +146,11 @@ export function useTasks(): UseTasksState {
     setTasks(prev => [...prev, lastDeleted]);
     setLastDeleted(null);
   }, [lastDeleted]);
-
-  return { tasks, loading, error, derivedSorted, metrics, lastDeleted, addTask, updateTask, deleteTask, undoDelete };
+   // Function to clear lastDeleted when snackbar closes
+  const clearDeletedTask = useCallback(() => {
+    setLastDeleted(null);
+  }, []);
+  return { tasks, loading, error, derivedSorted, metrics, lastDeleted, addTask, updateTask, deleteTask, undoDelete, clearDeletedTask};
 }
 
 
